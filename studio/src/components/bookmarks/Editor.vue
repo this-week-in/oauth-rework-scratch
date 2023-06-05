@@ -55,7 +55,6 @@
 export default {
   name: 'Editor',
   props: ['bookmark'],
-  mounted() {},
   created() {
     this.original = {}
     for (let k in this.bookmark) {
@@ -165,9 +164,8 @@ export default {
 
 .bookmark-row {
   box-sizing: content-box;
-  /*box-sizing: border-box;*/
-  /*border-bottom: 1px solid black;*/
   padding-top: 1em;
   padding-bottom: 1em;
 }
+
 </style>

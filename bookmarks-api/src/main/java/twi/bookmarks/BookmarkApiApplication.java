@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -256,7 +257,7 @@ class BookmarkRestController {
                 "hash", it.hash(),
                 "tags", it.tags(),
                 "time", it.time().getTime(),
-                "edited", it.edited() == null? false : it.edited()
+                "edited", it.edited() == null ? false : it.edited()
         );
     }
 
@@ -293,7 +294,11 @@ class BookmarkRestController {
                 .map(bookmark -> String.format("* [%s](%s)", bookmark.description(), bookmark.href()))
                 .sorted()
                 .collect(Collectors.joining(System.lineSeparator()));
-        return ResponseEntity.ok(new ByteArrayResource(results.getBytes()));
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.TEXT_MARKDOWN)
+                .headers(hc -> hc.setContentDisposition(ContentDisposition.attachment().filename("twi-" + UUID.randomUUID() + ".md").build()))
+                .body(new ByteArrayResource(results.getBytes()));
     }
 
 }

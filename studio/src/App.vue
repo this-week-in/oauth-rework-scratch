@@ -14,6 +14,12 @@ body {
   border-bottom: 0 solid black;
 }
 
+.results
+{
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
 .expand-button {
   height: 1.5em;
   margin: 10px;
@@ -29,27 +35,26 @@ body {
   <div>
     <div class="container-fluid">
       <div>
-        <StickyTopPane class="sticky-search-panel">
-          <template>
-            <Search
-              @export-search="exportSearchResultsToMarkdown"
-              @search-parameters-cleared="searchParametersCleared"
-              @search-parameters-changed="searchParametersChanged"
-              :query="search.query"
-              :start="search.start"
-              :stop="search.stop"
-              :errors="search.errors"
-            />
-          </template>
-        </StickyTopPane>
 
-        <div v-for="bookmark in bookmarks" class="editor-row" :key="bookmark.bookmarkId">
-          <Editor
-            @save-bookmark="saveBookmark"
-            @open-bookmark="openBookmark"
-            @delete-bookmark="deleteBookmark"
-            :bookmark="bookmark"
-          />
+        <Search
+            @export-search="exportSearchResultsToMarkdown"
+            @search-parameters-cleared="searchParametersCleared"
+            @search-parameters-changed="searchParametersChanged"
+            :query="search.query"
+            :start="search.start"
+            :stop="search.stop"
+            :errors="search.errors"
+        />
+
+        <div class="results">
+          <div v-for="bookmark in bookmarks" class="editor-row" :key="bookmark.bookmarkId">
+            <Editor
+                @save-bookmark="saveBookmark"
+                @open-bookmark="openBookmark"
+                @delete-bookmark="deleteBookmark"
+                :bookmark="bookmark"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -57,7 +62,6 @@ body {
 </template>
 <script>
 import Search from './components/bookmarks/Search.vue'
-import StickyTopPane from './components/util/StickyTopPane.vue'
 import Editor from './components/bookmarks/Editor.vue'
 import SearchQuery from './SearchQuery.js'
 import BookmarkService from './BookmarkService.js'
@@ -69,24 +73,16 @@ const bookmarkService = new BookmarkService(rootUrl)
 
 export default {
   created() {
-    this.showExpandButton = false
-    this.showCollapseButton = true
   },
   components: {
     Editor,
     Search,
-    StickyTopPane
   },
   mounted() {
     console.log('--------------------------------------------------')
     console.log('connecting to ' + bookmarkService.bookmarkUri)
     console.log('--------------------------------------------------')
-    window.emitter.on('authentication-success', () => {
-      console.log('parameters changed', this.search)
-      this.searchParametersChanged(this.search)
-    })
-
-    window.emitter.emit('authentication-success')
+    this.searchParametersChanged(this.search)
   },
   methods: {
     exportSearchResultsToMarkdown(search) {
@@ -102,9 +98,7 @@ export default {
     },
     async searchParametersChanged(search) {
       this.search = search
-      if (this.debug === true) {
-        console.log('the search has changed', JSON.stringify(this.search))
-      }
+      console.log('the search has changed', JSON.stringify(this.search))
       const results = await bookmarkService.search(this.search)
       this.loadBookmarks(results)
     },
