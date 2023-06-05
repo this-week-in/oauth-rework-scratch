@@ -2,9 +2,15 @@ package twi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+
+import java.net.URI;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * this is a proxy to both the backend bookmark-api and the static HTML
@@ -13,6 +19,7 @@ import org.springframework.context.annotation.Bean;
  * @author Josh Long
  */
 @SpringBootApplication
+@EnableConfigurationProperties(GatewayProperties.class)
 public class GatewayApplication {
 
     public static void main(String[] args) {
@@ -20,15 +27,27 @@ public class GatewayApplication {
     }
 
     @Bean
-    RouteLocator gateway(RouteLocatorBuilder rlb) {
+    RouteLocator gateway(GatewayProperties gp, RouteLocatorBuilder rlb)  {
+        var api = determineUri(gp, GatewayProperties::bookmarksApiUri, () -> URI.create("http://localhost:8081"));
+        var html = determineUri(gp, GatewayProperties::htmlUri, () -> URI.create("http://127.0.0.1:8084"));
         return rlb
                 .routes()
                 .route(rs -> rs
                         .path("/api/**")
                         .filters(f -> f.tokenRelay().rewritePath("/api/(?<segment>.*)", "/$\\{segment}"))
-                        .uri("http://localhost:8081"))
-                .route(rs -> rs.path("/**").uri("http://127.0.0.1:8084"))
+                        .uri(api))
+                .route(rs -> rs.path("/**").uri(html))
                 .build();
+    }
+
+    private static URI determineUri(GatewayProperties g, Function<GatewayProperties, URI> u, Supplier<URI> defaultUri) {
+        var result = u.apply(g);
+        return result != null ? result : defaultUri.get();
     }
 }
 
+@ConfigurationProperties(prefix = "twi.gateway")
+record GatewayProperties(
+        URI bookmarksApiUri,
+        URI htmlUri) {
+}
