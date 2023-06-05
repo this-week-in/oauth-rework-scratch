@@ -14,10 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -39,39 +37,15 @@ public class BookmarkApiApplication {
 
 }
 
-@Service
-class GreetingsService {
-
-    @PreAuthorize("hasAuthority('SCOPE_user.read')")
-    public Map<String, String> greet() {
-        var jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Map.of("message", "Hello " + jwt.getSubject());
-    }
-}
-
-@Controller
 @ResponseBody
-class GreetingsController {
+@Controller
+class MeController {
 
-    private final GreetingsService service;
-
-    GreetingsController(GreetingsService service) {
-        this.service = service;
-    }
-
-    @GetMapping("/nihao")
-    Map<String, String> nihao(@AuthenticationPrincipal Jwt jwt) {
-        return Map.of("message", "nihao " + jwt.getSubject());
-    }
-
-    @GetMapping("/hello")
-    Map<String, String> hello() {
-        return this.service.greet();
+    @GetMapping("/me")
+    Map<String, String> me(@AuthenticationPrincipal Jwt jwt) {
+        return Map.of("name", jwt.getSubject());
     }
 }
-
-
-// bookmarks api code ported over
 
 
 record Bookmark(
@@ -260,7 +234,6 @@ class BookmarkRestController {
                 "edited", it.edited() == null ? false : it.edited()
         );
     }
-
 
     private Collection<Bookmark> doSearch(String query, Long start, Long stop, boolean errors) {
         return this.bookmarkService.search(query,

@@ -14,8 +14,7 @@ body {
   border-bottom: 0 solid black;
 }
 
-.results
-{
+.results {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
@@ -35,6 +34,9 @@ body {
   <div>
     <div class="container-fluid">
       <div>
+        <div>
+          hello, {{ user }}
+        </div>
 
         <Search
             @export-search="exportSearchResultsToMarkdown"
@@ -78,11 +80,12 @@ export default {
     Editor,
     Search,
   },
-  mounted() {
+  async mounted() {
     console.log('--------------------------------------------------')
     console.log('connecting to ' + bookmarkService.bookmarkUri)
     console.log('--------------------------------------------------')
-    this.searchParametersChanged(this.search)
+    this.user = await bookmarkService.me()
+    await this.searchParametersChanged(this.search)
   },
   methods: {
     exportSearchResultsToMarkdown(search) {
@@ -148,6 +151,7 @@ export default {
 
     const today = new Date()
     return {
+      user: null,
       count: 0,
       showSearch: true,
       account: {

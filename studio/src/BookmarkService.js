@@ -4,6 +4,11 @@ export default class BookmarkService {
         console.log('the bookmark API is', this.bookmarkUri)
     }
 
+    async me() {
+        const result = await fetch(this.bookmarkUri + 'me')
+        return ( await result.json()).name 
+    }
+
     buildSearchResultsUrl(path, searchQuery) {
         const params = {}
         if (searchQuery.query !== null && searchQuery.query.trim() !== '') {
