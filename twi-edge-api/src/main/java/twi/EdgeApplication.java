@@ -1,4 +1,4 @@
-package com.example.authclient;
+package twi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,11 +6,17 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * this is a proxy to both the backend bookmark-api and the static HTML
+ * site that provides the experience for this system.
+ *
+ * @author Josh Long
+ */
 @SpringBootApplication
-public class AuthclientApplication {
+public class EdgeApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthclientApplication.class, args);
+        SpringApplication.run(EdgeApplication.class, args);
     }
 
     @Bean
