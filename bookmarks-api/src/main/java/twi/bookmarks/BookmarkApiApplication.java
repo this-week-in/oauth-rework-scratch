@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,11 @@ class GreetingsController {
 
     GreetingsController(GreetingsService service) {
         this.service = service;
+    }
+
+    @GetMapping("/nihao")
+    Map<String, String> nihao(@AuthenticationPrincipal Jwt jwt) {
+        return Map.of("message", "nihao " + jwt.getSubject());
     }
 
     @GetMapping("/hello")
