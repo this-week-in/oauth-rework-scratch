@@ -256,7 +256,7 @@ class BookmarkRestController {
                 "hash", it.hash(),
                 "tags", it.tags(),
                 "time", it.time().getTime(),
-                "edited", it.edited()
+                "edited", it.edited() == null? false : it.edited()
         );
     }
 
