@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Bean;
  * @author Josh Long
  */
 @SpringBootApplication
-public class EdgeApplication {
+public class GatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EdgeApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 
     @Bean
