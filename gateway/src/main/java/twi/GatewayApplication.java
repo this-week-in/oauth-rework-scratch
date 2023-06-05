@@ -29,7 +29,7 @@ public class GatewayApplication {
     @Bean
     RouteLocator gateway(GatewayProperties gp, RouteLocatorBuilder rlb)  {
         var api = determineUri(gp, GatewayProperties::bookmarksApiUri, () -> URI.create("http://localhost:8081"));
-        var html = determineUri(gp, GatewayProperties::htmlUri, () -> URI.create("http://127.0.0.1:8084"));
+        var html = determineUri(gp, GatewayProperties::htmlUri, () -> URI.create("http://localhost:5173"));
         return rlb
                 .routes()
                 .route(rs -> rs
