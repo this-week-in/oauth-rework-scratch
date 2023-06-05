@@ -10,23 +10,23 @@
       <div>
         <label for="searchQuery">Query</label>
         <input
-            type="text"
-            v-model="search.query"
-            class="form-control"
-            id="searchQuery"
-            placeholder="Query"
+          type="text"
+          v-model="search.query"
+          class="form-control"
+          id="searchQuery"
+          placeholder="Query"
         />
       </div>
       <div>
         <label for="startDate">Start Date </label>
-        <DatePick class="form-control" id="startDate" v-model="search.start"/>
+        <DatePick class="form-control" id="startDate" v-model="search.start" />
       </div>
       <div>
         <label for="startDate">Stop Date </label>
-        <DatePick class="form-control" id="stopDate" v-model="search.stop"/>
+        <DatePick class="form-control" id="stopDate" v-model="search.stop" />
       </div>
       <div>
-        <input class="form-check-input" v-model="search.errors" type="checkbox" id="searchErrors"/>
+        <input class="form-check-input" v-model="search.errors" type="checkbox" id="searchErrors" />
         <label class="form-check-label" for="searchErrors"> Show only those needing review </label>
       </div>
       <div>
@@ -44,18 +44,14 @@ import SearchQuery from '../../SearchQuery'
 import DatePick from '../util/DatePick.vue'
 
 export default {
-  components: {DatePick},
+  components: { DatePick },
   name: 'Search',
   props: ['query', 'stop', 'start', 'errors'],
   watch: {
-    query: function (/* newValue*/) {
-    },
-    errors: function (/* newValue*/) {
-    },
-    start: function (/* newValue*/) {
-    },
-    stop: function (/* newValue*/) {
-    }
+    query: function (/* newValue*/) {},
+    errors: function (/* newValue*/) {},
+    start: function (/* newValue*/) {},
+    stop: function (/* newValue*/) {}
   },
   methods: {
     exportToMarkdown() {

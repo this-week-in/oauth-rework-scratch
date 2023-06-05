@@ -34,27 +34,25 @@ body {
   <div>
     <div class="container-fluid">
       <div>
-        <div>
-          hello, {{ user }}
-        </div>
+        <div>hello, {{ user }}</div>
 
         <Search
-            @export-search="exportSearchResultsToMarkdown"
-            @search-parameters-cleared="searchParametersCleared"
-            @search-parameters-changed="searchParametersChanged"
-            :query="search.query"
-            :start="search.start"
-            :stop="search.stop"
-            :errors="search.errors"
+          @export-search="exportSearchResultsToMarkdown"
+          @search-parameters-cleared="searchParametersCleared"
+          @search-parameters-changed="searchParametersChanged"
+          :query="search.query"
+          :start="search.start"
+          :stop="search.stop"
+          :errors="search.errors"
         />
 
         <div class="results">
           <div v-for="bookmark in bookmarks" class="editor-row" :key="bookmark.bookmarkId">
             <Editor
-                @save-bookmark="saveBookmark"
-                @open-bookmark="openBookmark"
-                @delete-bookmark="deleteBookmark"
-                :bookmark="bookmark"
+              @save-bookmark="saveBookmark"
+              @open-bookmark="openBookmark"
+              @delete-bookmark="deleteBookmark"
+              :bookmark="bookmark"
             />
           </div>
         </div>
@@ -74,11 +72,10 @@ const rootUrl = ((u) => (u.endsWith('/') ? u : u + '/'))(appServiceRoot) + 'api/
 const bookmarkService = new BookmarkService(rootUrl)
 
 export default {
-  created() {
-  },
+  created() {},
   components: {
     Editor,
-    Search,
+    Search
   },
   async mounted() {
     console.log('--------------------------------------------------')
