@@ -86,13 +86,6 @@ class BookmarkService {
         return new String[0];
     }
 
-    private static boolean defaultBoolean(Boolean result) {
-        if (null == result)
-            return false;
-        return result;
-    }
-
-
     BookmarkService(JdbcTemplate template) {
         this.template = template;
     }

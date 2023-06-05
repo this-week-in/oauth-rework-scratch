@@ -18,14 +18,14 @@ class BookmarkServiceTest {
     }
 
     @Test
-    void search() throws Exception {
+    void search() {
         var now = Instant.now();
         var old = now.minus(21, TimeUnit.DAYS.toChronoUnit());
         System.out.println("the old date is " + old);
         var results = this.service.search("Spring Boot", new Date(old.toEpochMilli()), new Date(now.toEpochMilli()), false);
-        System.out.println("there are "  + results.size() + " results.");
-        for (var b : results)  {
-            System.out.println("b: "+ b.toString());
+        System.out.println("there are " + results.size() + " results.");
+        for (var b : results) {
+            System.out.println("b: " + b.toString());
         }
     }
 

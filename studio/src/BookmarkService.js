@@ -6,7 +6,7 @@ export default class BookmarkService {
 
     async me() {
         const result = await fetch(this.bookmarkUri + 'me')
-        return ( await result.json()).name 
+        return ( await result.json()).name
     }
 
     buildSearchResultsUrl(path, searchQuery) {
