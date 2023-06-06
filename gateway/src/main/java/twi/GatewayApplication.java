@@ -9,6 +9,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 
 import java.net.URI;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
